@@ -13,52 +13,86 @@
 # Compiler settings
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
+SRCS_DIR = functions
+GNL_DIR = GNL
+FT_PRINTF_DIR = ft_printf
+OBJ_DIR = obj
 
 # Source files and object files for the main part
-SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
-       ft_isdigit.c ft_isprint.c ft_memchr.c ft_memcmp.c \
-       ft_memcpy.c ft_memmove.c ft_memset.c ft_putchar_fd.c ft_putendl_fd.c \
-       ft_putstr_fd.c ft_strchr.c ft_strdup.c ft_putnbr_fd.c \
-       ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_striteri.c \
-       ft_strnstr.c ft_strrchr.c ft_substr.c ft_itoa.c ft_strmapi.c \
-       ft_tolower.c ft_toupper.c ft_strtrim.c ft_strncmp.c ft_split.c
-OBJ = $(SRCS:%.c=%.o)
+SRCS = $(SRCS_DIR)/ft_atoi.c $(SRCS_DIR)/ft_bzero.c $(SRCS_DIR)/ft_calloc.c \
+       $(SRCS_DIR)/ft_isalnum.c $(SRCS_DIR)/ft_isalpha.c $(SRCS_DIR)/ft_isascii.c \
+       $(SRCS_DIR)/ft_isdigit.c $(SRCS_DIR)/ft_isprint.c $(SRCS_DIR)/ft_memchr.c \
+       $(SRCS_DIR)/ft_memcmp.c $(SRCS_DIR)/ft_memcpy.c $(SRCS_DIR)/ft_memmove.c \
+       $(SRCS_DIR)/ft_memset.c $(SRCS_DIR)/ft_putchar_fd.c $(SRCS_DIR)/ft_putendl_fd.c \
+       $(SRCS_DIR)/ft_putstr_fd.c $(SRCS_DIR)/ft_strchr.c $(SRCS_DIR)/ft_strdup.c \
+       $(SRCS_DIR)/ft_putnbr_fd.c $(SRCS_DIR)/ft_strjoin.c $(SRCS_DIR)/ft_strlcat.c \
+       $(SRCS_DIR)/ft_strlcpy.c $(SRCS_DIR)/ft_strlen.c $(SRCS_DIR)/ft_striteri.c \
+       $(SRCS_DIR)/ft_strnstr.c $(SRCS_DIR)/ft_strrchr.c $(SRCS_DIR)/ft_substr.c \
+       $(SRCS_DIR)/ft_itoa.c $(SRCS_DIR)/ft_strmapi.c $(SRCS_DIR)/ft_tolower.c \
+       $(SRCS_DIR)/ft_toupper.c $(SRCS_DIR)/ft_strtrim.c $(SRCS_DIR)/ft_strncmp.c \
+       $(SRCS_DIR)/ft_split.c $(SRCS_DIR)/ft_atol.c $(SRCS_DIR)/ft_lstnew.c \
+       $(SRCS_DIR)/ft_lstadd_front.c $(SRCS_DIR)/ft_lstsize.c $(SRCS_DIR)/ft_lstlast.c \
+       $(SRCS_DIR)/ft_lstadd_back.c $(SRCS_DIR)/ft_lstdelone.c $(SRCS_DIR)/ft_lstclear.c \
+       $(SRCS_DIR)/ft_lstiter.c $(SRCS_DIR)/ft_lstmap.c \ $(SRCS_DIR)/ft_strcpy.c \
+       $(FT_PRINTF_DIR)/ft_printf.c $(FT_PRINTF_DIR)/ft_putptr.c $(FT_PRINTF_DIR)/ft_putnbrbasehex.c \
+       $(FT_PRINTF_DIR)/ft_putunbr.c $(FT_PRINTF_DIR)/ft_putchar.c $(FT_PRINTF_DIR)/ft_putstr.c \
+	   $(FT_PRINTF_DIR)/ft_putnbr.c \
+	   $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
 
-# Bonus source and object files
-SRCS_B = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
-         ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
-OBJS_B = $(SRCS_B:%.c=%.o)
+OBJ = $(patsubst $(SRCS_DIR)/%.c,$(OBJ_DIR)/$(SRCS_DIR)/%.o,$(filter $(SRCS_DIR)/%,$(SRCS)))
+OBJ += $(patsubst $(FT_PRINTF_DIR)/%.c,$(OBJ_DIR)/$(FT_PRINTF_DIR)/%.o,$(filter $(FT_PRINTF_DIR)/%,$(SRCS)))
+OBJ += $(patsubst $(GNL_DIR)/%.c,$(OBJ_DIR)/$(GNL_DIR)/%.o,$(filter $(GNL_DIR)/%,$(SRCS)))
 
 # Library name
 NAME = libft.a
 
 # Default target - compiles the main library without bonus
+a: $(NAME)
+	@echo "Library compiled."
+
 all: $(NAME)
+	@echo "Library compiled."
 
 # Compile main library
 $(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
 
 # Rule to compile individual .c files to .o files
-%.o: %.c
+$(OBJ_DIR)/$(SRCS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/$(SRCS_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Bonus target - includes both main and bonus object files
-bonus: $(NAME) $(OBJS_B)
-	ar rcs $(NAME) $(OBJ) $(OBJS_B)
+$(OBJ_DIR)/$(FT_PRINTF_DIR)/%.o: $(FT_PRINTF_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/$(FT_PRINTF_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/$(GNL_DIR)/%.o: $(GNL_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/$(GNL_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean target to remove object files
+c:
+	rm -rf $(OBJ_DIR)
+	@echo "Cleaned object files."
+
 clean:
-	rm -f $(OBJ) $(OBJS_B)
-#	@echo "Cleaned object files."
+	rm -rf $(OBJ_DIR)
+	@echo "Cleaned object files."
 
 # Fclean target to remove object files and the library
+f: clean
+	rm -f $(NAME)
+	@echo "Cleaned library."
+
 fclean: clean
 	rm -f $(NAME)
-#	@echo "Cleaned library."
+	@echo "Cleaned library."
 
 # Re target to recompile everything
 re: fclean all
 
+christophe:
+	@echo "Christophe compiled."
+
 # Phony targets
-.PHONY: all clean fclean re bonus
+.PHONY: a all c clean f fclean re christophe
