@@ -34,6 +34,7 @@ SRCS = $(SRCS_DIR)/ft_atoi.c $(SRCS_DIR)/ft_bzero.c $(SRCS_DIR)/ft_calloc.c \
        $(SRCS_DIR)/ft_lstadd_front.c $(SRCS_DIR)/ft_lstsize.c $(SRCS_DIR)/ft_lstlast.c \
        $(SRCS_DIR)/ft_lstadd_back.c $(SRCS_DIR)/ft_lstdelone.c $(SRCS_DIR)/ft_lstclear.c \
        $(SRCS_DIR)/ft_lstiter.c $(SRCS_DIR)/ft_lstmap.c $(SRCS_DIR)/ft_strcpy.c \
+	   $(SRCS_DIR)/ft_safe_atoi.c $(SRCS_DIR)/ft_is_valid_number.c \
        $(FT_PRINTF_DIR)/ft_printf.c $(FT_PRINTF_DIR)/ft_putptr.c $(FT_PRINTF_DIR)/ft_putnbrbasehex.c \
        $(FT_PRINTF_DIR)/ft_putunbr.c $(FT_PRINTF_DIR)/ft_putchar.c $(FT_PRINTF_DIR)/ft_putstr.c \
 	   $(FT_PRINTF_DIR)/ft_putnbr.c \
